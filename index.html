@@ -106,14 +106,18 @@
   .blk.over > i { border-radius: 8px; }
 
   .stats {
-    display: flex; flex-direction: column; justify-content: center;
-    gap: 12px; min-width: 0; padding-left: 10px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    min-width: 0; padding-left: 10px;
     color: var(--ink);
     white-space: nowrap;
   }
+  /* 「経過」は縦の真ん中あたり、「残り」はその下へ離して置く */
+  .stats::before { content: ""; flex: 52 1 0; }
+  .stats::after  { content: ""; flex: 48 1 0; }
+  .stats > div + div { margin-top: 36px; }
   .big { font-family: var(--serif); font-size: 28px; font-variant-numeric: tabular-nums; line-height: 1; }
   .stats .lbl { font-size: 10px; letter-spacing: 0.08em; color: var(--ink-3); opacity: 0.75; }
-  .stats .val { font-size: 21px; font-weight: 500; font-variant-numeric: tabular-nums; margin-top: 3px; }
+  .stats .val { font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; margin-top: 3px; }
   .stats.broke .big, .stats.broke .val { color: var(--broke-ink); }   /* 突き破った後は緑みの色に */
 </style>
 
