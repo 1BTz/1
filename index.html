@@ -187,7 +187,7 @@
     for (let i = 0; i < total; i++) {
       const n = i + 1;
       const a = document.createElement("div");
-      const showLabel = n % 5 === 0;   // 日付の目盛りは5日ごと
+      const showLabel = n % 5 === 0 || n > DAYS;   // 目盛りは5日ごと。30日を超えた分は毎日
       a.textContent = showLabel ? String(n) : "";
       if (i >= DAYS) a.className = "over";
       axisEl.appendChild(a);
