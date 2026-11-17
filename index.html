@@ -13,7 +13,7 @@
     --frame: #3d3a35;                       /* ブロックの枠 */
     --future-line: rgba(36, 33, 31, 0.22);
     --accent: #427660;                      /* 唐草風呂敷の深い緑 */
-    --now-line: rgba(0, 0, 0, 0.7);
+    --now-line: #a9e0c2;                    /* いまの位置を示す線(グラフの緑を明るくした色) */
     --broke-ink: #427660;                   /* 30日を突き破った後の数字の色 */
 
     --serif: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", Georgia, serif;
@@ -46,13 +46,13 @@
   /* Ctrl+ホイールで全体を拡大縮小できるよう、全部を1つの入れ物に入れる */
   #zoomWrap {
     height: 100vh;
-    padding: 16px 18px;
+    padding: 12px 14px;
     display: flex;
     flex-direction: column;
     transform-origin: top left;
   }
 
-  header { flex: 0 0 auto; margin-bottom: 10px; }
+  header { margin: 0; }
   h1 {
     margin: 0;
     font-family: var(--serif);
@@ -66,18 +66,19 @@
   .ttl img { height: 13px; width: auto; display: block; }
   .range { margin-top: 5px; font-size: 8.5px; color: var(--ink-3); letter-spacing: 0.04em; opacity: 0.65; }
 
-  .body { flex: 1 1 0; min-height: 0; display: flex; gap: 10px; align-items: stretch; }
+  /* 左: 題名と日付 / 中央: グラフ(画面の真ん中) / 右: 数字 */
+  .body { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr); align-items: stretch; }
 
   /* 日ごとのブロック(下が1日目、上へ積み上がる) */
   .axis, .bar { display: flex; flex-direction: column-reverse; gap: 5px; }   /* ブロック同士の間隔(目盛りと同じ値にする) */
-  .axis { width: 16px; font-family: var(--mono); font-size: 8px; color: var(--ink-3); opacity: 0.7; }
+  .axis { position: absolute; top: 0; bottom: 0; right: 100%; margin-right: 8px; width: 16px; font-family: var(--mono); font-size: 8px; color: var(--ink-3); opacity: 0.7; }
   .axis > div {
     flex: 1 1 0; min-height: 0;
     display: flex; align-items: center; justify-content: flex-end;
     line-height: 1; overflow: visible;
   }
   .axis > div.over { color: var(--ink-3); opacity: 0.8; }
-  .barwrap { position: relative; width: 36px; flex: 0 0 auto; }
+  .barwrap { position: relative; width: 36px; }
   .bar { height: 100%; width: 100%; }
 
   .blk {
@@ -106,7 +107,7 @@
 
   .stats {
     display: flex; flex-direction: column; justify-content: center;
-    gap: 7px; min-width: 0;
+    gap: 7px; min-width: 0; padding-left: 10px;
     color: var(--ink);
     white-space: nowrap;
   }
@@ -117,13 +118,12 @@
 </style>
 
 <div id="zoomWrap">
-  <header>
+  <div class="body">
+  <div class="side"><header>
     <div class="ttl"><img alt="" src="data:image/png;base64,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"></div>
     <div class="range" id="range">—</div>
-  </header>
-  <div class="body">
-    <div class="axis" id="axis"></div>
-    <div class="barwrap"><div class="bar" id="bar"></div></div>
+  </header></div>
+    <div class="barwrap"><div class="axis" id="axis"></div><div class="bar" id="bar"></div></div>
     <div class="stats" id="stats">
       <div><div class="lbl">経過</div><div class="big" id="pct" style="margin-top:3px">—</div></div>
       <div><div class="lbl" id="remLabel">残り</div><div class="val" id="remVal">—</div></div>
@@ -146,24 +146,17 @@
   document.getElementById("range").textContent =
     (START.getMonth() + 1) + "/" + START.getDate() + " → " + (lastDay.getMonth() + 1) + "/" + lastDay.getDate();
 
-  // ===== Ctrl+ホイールで拡大縮小 =====
+  // ===== 画面の高さいっぱいに全体を拡大縮小(ブロックの縦横の形は常に同じ) =====
   const zoomWrap = document.getElementById("zoomWrap");
-  let zoomLevel = 1;
-  try { zoomLevel = parseFloat(localStorage.getItem("g-zoom")) || 1; } catch (e) {}
-  function applyZoom() {
-    zoomWrap.style.transform = "scale(" + zoomLevel + ")";
-    zoomWrap.style.width = (100 / zoomLevel) + "%";
-    // 高さを固定してブロックの形をそろえる(画面が低い時だけ縮む)
-    zoomWrap.style.height = "min(" + (100 / zoomLevel) + "vh, " + (670 / zoomLevel) + "px)";
+  const DESIGN_H = 620;   // 基準の高さ。この高さのときのブロックの形を保つ
+  function applyScale() {
+    const s = window.innerHeight / DESIGN_H;
+    zoomWrap.style.transform = "scale(" + s + ")";
+    zoomWrap.style.width = (window.innerWidth / s) + "px";
+    zoomWrap.style.height = DESIGN_H + "px";
   }
-  window.addEventListener("wheel", function (e) {
-    if (!e.ctrlKey) return;
-    e.preventDefault();
-    zoomLevel = Math.min(2, Math.max(0.4, zoomLevel + (e.deltaY < 0 ? 0.05 : -0.05)));
-    try { localStorage.setItem("g-zoom", zoomLevel); } catch (e2) {}
-    applyZoom();
-  }, { passive: false });
-  applyZoom();
+  window.addEventListener("resize", applyScale);
+  applyScale();
 
   // ===== 背景の不透明度(右クリックメニューから。C# が setBgOpacity を呼ぶ) =====
   let bgOpacity = 100;
@@ -275,13 +268,6 @@
     if (!(window.chrome && window.chrome.webview)) return;
     const dir = edgeHitTest(e.clientX, e.clientY);
     window.chrome.webview.postMessage(dir ? "start-resize:" + dir : "start-drag");
-  });
-
-  // F11 で「帯とツールバー」の表示/非表示
-  document.addEventListener("keydown", function (e) {
-    if (e.key !== "F11") return;
-    e.preventDefault();
-    if (window.chrome && window.chrome.webview) window.chrome.webview.postMessage("toggle-chrome");
   });
 })();
 </script>
