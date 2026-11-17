@@ -70,7 +70,7 @@
   .body { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr); align-items: stretch; }
 
   /* 日ごとのブロック(下が1日目、上へ積み上がる) */
-  .axis, .bar { display: flex; flex-direction: column-reverse; gap: 5px; }   /* ブロック同士の間隔(目盛りと同じ値にする) */
+  .axis, .bar { display: flex; flex-direction: column-reverse; gap: 0; }   /* ブロック同士はくっつける(区切りは角の丸みでできる「くびれ」) */
   .axis { position: absolute; top: 0; bottom: 0; right: 100%; margin-right: 8px; width: 16px; font-family: var(--mono); font-size: 8px; color: var(--ink-3); opacity: 0.7; }
   .axis > div {
     flex: 1 1 0; min-height: 0;
@@ -84,7 +84,7 @@
   .blk {
     position: relative;
     flex: 1 1 0; min-height: 0;
-    border-radius: 5px;   /* 角の丸み */
+    border-radius: 8px;   /* 角の丸み(大きいほどくびれが深くなる) */
     overflow: hidden;
     box-shadow: 0 0 0 1px var(--frame);
     background-color: rgba(var(--bg-r), var(--bg-g), var(--bg-b), var(--bg-alpha));
@@ -103,7 +103,7 @@
     background: none;
     overflow: visible;
   }
-  .blk.over > i { border-radius: 5px; }
+  .blk.over > i { border-radius: 8px; }
 
   .stats {
     display: flex; flex-direction: column; justify-content: center;
